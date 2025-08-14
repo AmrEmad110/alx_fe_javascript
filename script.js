@@ -8,6 +8,11 @@ const quotes = [
 ];
 const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteButton = document.getElementById("newQuote");
+
+const newQuoteText = document.getElementById("newQuoteText");
+const newQuoteCategory = document.getElementById("newQuoteCategory");
+const addQuoteBtn = document.getElementById("addQuoteBtn");
+
 function showRandomQuote() {
   // نختار رقم عشوائي من 0 لحد طول المصفوفة - 1
   const randomIndex = Math.floor(Math.random() * quotes.length);
