@@ -9,15 +9,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const quoteDisplay = document.getElementById("quoteDisplay");
   const newQuoteButton = document.getElementById("newQuote");
+  const exportBtn = document.getElementById("exportBtn");
+  const importFile = document.getElementById("importFile");
 
-  // 1) عرض اقتباس عشوائي
+  // ---- 1) Local Storage ----
+  function saveQuotes() {
+    localStorage.setItem("quotes", JSON.stringify(quotes));
+  }
+
+  function loadQuotes() {
+    const stored = localStorage.getItem("quotes");
+    if (stored) {
+      quotes.length = 0; // نفرغ الأول
+      quotes.push(...JSON.parse(stored));
+    }
+  }
+
+  // ---- 2) عرض اقتباس عشوائي + Session Storage ----
   function showRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const randomQuote = quotes[randomIndex];
     quoteDisplay.innerHTML = `${randomQuote.text} — (${randomQuote.category})`;
+
+    // نحفظ آخر اقتباس
+    sessionStorage.setItem("lastQuote", JSON.stringify(randomQuote));
   }
 
-  // 2) إضافة اقتباس جديد + تحديث الـ DOM
+  // ---- 3) إضافة اقتباس جديد ----
   function addQuote() {
     const textInput = document.getElementById("newQuoteText");
     const categoryInput = document.getElementById("newQuoteCategory");
@@ -31,19 +49,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     quotes.push({ text: quoteText, category: quoteCategory });
+    saveQuotes(); // نخزن في localStorage
     quoteDisplay.innerHTML = `${quoteText} — (${quoteCategory})`;
 
     if (textInput) textInput.value = "";
     if (categoryInput) categoryInput.value = "";
   }
 
-  // 3) إنشاء نموذج الإضافة ديناميكيًا (الاسم المطلوب من الـ checker)
+  // ---- 4) إنشاء فورم الإضافة ديناميكياً ----
   function createAddQuoteForm() {
     let textInput = document.getElementById("newQuoteText");
     let categoryInput = document.getElementById("newQuoteCategory");
     let addBtn = document.getElementById("addQuoteBtn");
 
-    // لو الفورم مش موجود في الـ HTML، نولّده
     if (!textInput || !categoryInput || !addBtn) {
       const wrapper = document.createElement("div");
 
@@ -65,22 +83,56 @@ document.addEventListener("DOMContentLoaded", function () {
       wrapper.appendChild(categoryInput);
       wrapper.appendChild(addBtn);
 
-      // نحطّه بعد زر "Show New Quote"
       (newQuoteButton?.parentNode || document.body).appendChild(wrapper);
     }
 
-    // نربط زر الإضافة بالدالة
     addBtn.addEventListener("click", addQuote);
   }
 
-  // 4) Event listener لزر "Show New Quote"
+  // ---- 5) Export / Import JSON ----
+  function exportToJsonFile() {
+    const dataStr = JSON.stringify(quotes, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "quotes.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  function importFromJsonFile(event) {
+    const fileReader = new FileReader();
+    fileReader.onload = function(e) {
+      const importedQuotes = JSON.parse(e.target.result);
+      quotes.push(...importedQuotes);
+      saveQuotes();
+      alert("Quotes imported successfully!");
+    };
+    fileReader.readAsText(event.target.files[0]);
+  }
+
+  // ---- Event Listeners ----
   if (newQuoteButton) {
     newQuoteButton.addEventListener("click", showRandomQuote);
   }
+  if (exportBtn) {
+    exportBtn.addEventListener("click", exportToJsonFile);
+  }
+  if (importFile) {
+    importFile.addEventListener("change", importFromJsonFile);
+  }
 
-  // نكشف addQuote للعالمية لو بتستخدم onclick في الـ HTML
+  // ---- Initialization ----
+  loadQuotes(); // نجيب من localStorage
+  const lastQuote = sessionStorage.getItem("lastQuote");
+  if (lastQuote) {
+    const q = JSON.parse(lastQuote);
+    quoteDisplay.innerHTML = `${q.text} — (${q.category})`;
+  }
+
   window.addQuote = addQuote;
-
-  // نولّد/نجهّز الفورم
   createAddQuoteForm();
 });
