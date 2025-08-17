@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
       quotes.push(...serverQuotes);
       saveQuotes();
       populateCategories();
-      showNotification("Quotes synced with server (server wins).");
+      showNotification("Quotes synced with server!");
     }
   }
 
