@@ -136,3 +136,71 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addQuote = addQuote;
   createAddQuoteForm();
 });
+//-----------------------------------
+// =============================
+// Step 1: Simulate Server Interaction
+// =============================
+
+// العنصر اللي هيعرض الاقتباس
+const quoteDisplay = document.getElementById("quoteDisplay");
+
+// زرار الاقتباس الجديد
+const newQuoteBtn = document.getElementById("newQuote");
+
+// مصفوفة مؤقتة لحفظ الاقتباسات اللي جايه من السيرفر
+let serverQuotes = [];
+
+// ✅ دالة لعرض اقتباس عشوائي من البيانات اللي جايه من السيرفر
+function displayRandomQuote() {
+  if (serverQuotes.length === 0) {
+    quoteDisplay.textContent = "No quotes available yet. Please wait for server sync...";
+    return;
+  }
+  const randomIndex = Math.floor(Math.random() * serverQuotes.length);
+  quoteDisplay.textContent = serverQuotes[randomIndex].title;
+}
+
+// ✅ جلب بيانات من السيرفر (GET)
+async function fetchQuotesFromServer() {
+  try {
+    const res = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=5");
+    const data = await res.json();
+    serverQuotes = data; // حفظ الاقتباسات
+    console.log("Fetched from server:", serverQuotes);
+  } catch (error) {
+    console.error("Error fetching quotes:", error);
+  }
+}
+
+// ✅ إرسال بيانات جديدة للسيرفر (POST)
+async function addQuoteToServer(newQuoteText) {
+  const newQuote = {
+    title: newQuoteText,
+    body: "Extra details about the quote",
+    userId: 1
+  };
+
+  try {
+    const res = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      body: JSON.stringify(newQuote),
+      headers: { "Content-type": "application/json; charset=UTF-8" }
+    });
+    const data = await res.json();
+    console.log("Quote added to server simulation:", data);
+    alert("Quote added to server simulation!");
+  } catch (error) {
+    console.error("Error adding quote:", error);
+  }
+}
+
+// ✅ عند الضغط على زرار "New Quote" يعرض اقتباس عشوائي
+newQuoteBtn.addEventListener("click", displayRandomQuote);
+
+// ✅ تحديث دوري كل 10 ثواني لمحاكاة استلام بيانات جديدة من السيرفر
+setInterval(fetchQuotesFromServer, 10000);
+
+// ✅ استدعاء أول مرة عند تشغيل الصفحة
+fetchQuotesFromServer();
+
+
