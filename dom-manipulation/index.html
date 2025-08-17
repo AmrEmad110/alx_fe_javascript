@@ -5,16 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dynamic Quote Generator</title>
 </head>
-<body> 
+<body>
   <h1>Dynamic Quote Generator</h1>
-  <div id="quoteDisplay"></div>
-  <button id="newQuote">Show New Quote</button>
+  <div id="quoteDisplay">Click the button to see a quote!</div>
+  <button id="newQuote">New Quote</button>
 
-   <div class="add-quote">
-    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
-    <button id="addQuoteBtn">Add Quote</button>
-  </div>
+  <!-- زر تصدير الاقتباسات -->
+  <button id="exportBtn">Export Quotes</button>
+
+  <!-- إدخال استيراد ملف JSON -->
+  <input type="file" id="importFile" accept=".json" />
+
+  <!-- هنا بيتولد فورم الإضافة من الـ JS -->
+  
   <script src="script.js"></script>
 </body>
 </html>
