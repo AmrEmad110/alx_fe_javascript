@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // 4) Event listener لزر "Show New Quote"
   if (newQuoteButton) {
-    newQuoteButton.addEventListener("click", showRandomQuote);
+      newQuoteButton.addEventListener("click", displayRandomQuote);
   }
 
   // نكشف addQuote للعالمية لو بتستخدم onclick في الـ HTML
