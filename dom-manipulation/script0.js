@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const newQuoteButton = document.getElementById("newQuote");
 
   // 1) عرض اقتباس عشوائي
-  function showRandomQuote() {
+  function displayRandomQuote() {  //   --MODIFIED--AS--SCORE--
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const randomQuote = quotes[randomIndex];
     quoteDisplay.innerHTML = `${randomQuote.text} — (${randomQuote.category})`;
