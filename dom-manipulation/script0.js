@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const randomQuote = quotes[randomIndex];
     quoteDisplay.innerHTML = `${randomQuote.text} — (${randomQuote.category})`;
   }
+  
 
   // 2) إضافة اقتباس جديد + تحديث الـ DOM
   function addQuote() {
