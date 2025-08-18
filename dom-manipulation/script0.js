@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const newQuoteButton = document.getElementById("newQuote");
 
   // ✅ دالة displayRandomQuote بالاسم المطلوب
-  function displayRandomQuote() {
+  function showRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const randomQuote = quotes[randomIndex];
     quoteDisplay.innerHTML = `${randomQuote.text} — (${randomQuote.category})`;
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ✅ ربط الزرار بالدالة الصح
   if (newQuoteButton) {
-    newQuoteButton.addEventListener("click", displayRandomQuote);
+    newQuoteButton.addEventListener("click", showRandomQuote);
   }
 
   window.addQuote = addQuote;
