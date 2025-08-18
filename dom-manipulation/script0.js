@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // المصفوفة الأساسية
   const quotes = [
     { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
     { text: "Code is like humor. When you have to explain it, it’s bad.", category: "Programming" },
@@ -10,15 +9,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const quoteDisplay = document.getElementById("quoteDisplay");
   const newQuoteButton = document.getElementById("newQuote");
 
-  // 1) عرض اقتباس عشوائي
-  function displayRandomQuote() {  //   --MODIFIED--AS--SCORE--
+  // ✅ دالة displayRandomQuote بالاسم المطلوب
+  function displayRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const randomQuote = quotes[randomIndex];
     quoteDisplay.innerHTML = `${randomQuote.text} — (${randomQuote.category})`;
   }
-  
 
-  // 2) إضافة اقتباس جديد + تحديث الـ DOM
+  // ✅ دالة addQuote
   function addQuote() {
     const textInput = document.getElementById("newQuoteText");
     const categoryInput = document.getElementById("newQuoteCategory");
@@ -38,13 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (categoryInput) categoryInput.value = "";
   }
 
-  // 3) إنشاء نموذج الإضافة ديناميكيًا (الاسم المطلوب من الـ checker)
+  // ✅ إنشاء نموذج الإضافة
   function createAddQuoteForm() {
     let textInput = document.getElementById("newQuoteText");
     let categoryInput = document.getElementById("newQuoteCategory");
     let addBtn = document.getElementById("addQuoteBtn");
 
-    // لو الفورم مش موجود في الـ HTML، نولّده
     if (!textInput || !categoryInput || !addBtn) {
       const wrapper = document.createElement("div");
 
@@ -66,22 +63,18 @@ document.addEventListener("DOMContentLoaded", function () {
       wrapper.appendChild(categoryInput);
       wrapper.appendChild(addBtn);
 
-      // نحطّه بعد زر "Show New Quote"
       (newQuoteButton?.parentNode || document.body).appendChild(wrapper);
     }
 
-    // نربط زر الإضافة بالدالة
     addBtn.addEventListener("click", addQuote);
   }
 
-  // 4) Event listener لزر "Show New Quote"
+  // ✅ ربط الزرار بالدالة الصح
   if (newQuoteButton) {
-      newQuoteButton.addEventListener("click", displayRandomQuote);
+    newQuoteButton.addEventListener("click", displayRandomQuote);
   }
 
-  // نكشف addQuote للعالمية لو بتستخدم onclick في الـ HTML
   window.addQuote = addQuote;
 
-  // نولّد/نجهّز الفورم
   createAddQuoteForm();
 });
